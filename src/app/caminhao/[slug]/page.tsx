@@ -16,30 +16,32 @@ export async function generateStaticParams() {
 
 // FUNÇÃO MÁGICA DE SEO PARA O WHATSAPP
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  // 1. Resolve os parâmetros (Next.js 15)
   const { slug } = await params;
-  
-  // 2. Busca o caminhão
   const truck = trucks.find((t) => t.slug === slug);
 
   if (!truck) {
-    return {
-      title: 'Caminhão não encontrado | Ello Diniz',
-    };
+    return { title: 'Caminhão não encontrado' };
   }
 
-  // 3. Retorna os metadados formatados
+  // 1. DEFINE O DOMÍNIO FIXO (Troque pela sua URL atual da Vercel se não tiver domínio ainda)
+  const baseUrl = 'https://patio381.vercel.app/'; 
+  
+  // 2. MONTA A URL COMPLETA DA IMAGEM
+  // Se truck.mainImage for "/scania.jpg", vira "https://.../scania.jpg"
+  const imageUrl = `${baseUrl}${truck.mainImage}`;
+
   return {
     title: `${truck.title} - ${truck.year}`,
     description: `À venda em ${truck.location}. ${truck.audit.notes}. Valor: R$ ${truck.price.toLocaleString('pt-BR')}`,
     openGraph: {
-      title: `${truck.title} | Ello Diniz Caminhões`,
-      description: `${truck.audit.engineState} • ${truck.audit.tireCondition}. Clique para ver detalhes e fotos.`,
+      title: `${truck.title} | Pátio 381`,
+      description: `${truck.audit.engineState} • ${truck.audit.tireCondition}`,
+      url: `${baseUrl}/caminhao/${slug}`,
       images: [
         {
-          url: truck.mainImage, // A foto principal do caminhão vai aparecer no Zap!
-          width: 800,
-          height: 600,
+          url: imageUrl, // <--- Agora é uma URL absoluta garantida
+          width: 1200,
+          height: 630,
           alt: truck.title,
         },
       ],
