@@ -1,7 +1,13 @@
-// src/app/page.tsx (Trecho do Hero)
-// ...
+// src/app/page.tsx
+import TruckCard from './components/TruckCard';
+import { trucks } from '@/lib/data';
+
+export default function Home() {
+  return (
+    <main className="min-h-screen bg-slate-50 pb-20">
+      {/* Hero Section - Pátio 381 */}
       <div className="bg-slate-900 text-white py-20 px-4 relative overflow-hidden">
-        {/* Fundo decorativo (opcional) */}
+        {/* Fundo decorativo */}
         <div className="absolute top-0 right-0 w-1/2 h-full bg-yellow-500/10 skew-x-[-20deg] translate-x-20"></div>
 
         <div className="max-w-6xl mx-auto text-center relative z-10">
@@ -25,3 +31,21 @@
           </div>
         </div>
       </div>
+
+      {/* Listagem de Estoque */}
+      <div id="estoque" className="max-w-6xl mx-auto px-4 -mt-10 relative z-20">
+        <div className="bg-white p-6 rounded-xl shadow-lg mb-8 border border-gray-100">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2 flex items-center gap-2">
+            🚛 Oportunidades em Destaque
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {trucks.map((truck) => (
+              <TruckCard key={truck.id} data={truck} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
